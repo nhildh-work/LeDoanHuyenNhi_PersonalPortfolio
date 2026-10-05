@@ -1,0 +1,10 @@
+{
+  "description": "Create a stunning personal web portfolio that showcases your passion for Chinese Horoscope, film photography, and astrology with an ethereal design.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}

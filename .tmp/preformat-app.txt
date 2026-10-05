@@ -1,0 +1,701 @@
+[/workspaces/default/code/src/App.tsx#4975]
+1:import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from "react";
+2:import { Button, Modal, ThemeProvider } from "@figma/astraui";
+3:import { ArrowDown, ArrowRight, Mail, Sparkles } from "lucide-react";
+4:
+5:const memories = [
+6:  { id: 1, image: 1, note: "The light found us.", place: "light leak / 01" },
+7:  { id: 2, image: 3, note: "After dark, still golden.", place: "night out / 02" },
+8:  { id: 3, image: 4, note: "The people make the picture.", place: "my people / 03" },
+9:  { id: 4, image: 6, note: "A little birthday, a lot of love.", place: "birthday roll / 04" },
+10:  { id: 5, image: 2, note: "A blur I would never erase.", place: "soft focus / 05" },
+11:  { id: 6, image: 7, note: "Flowers and familiar faces.", place: "last frame / 06" },
+12:  { id: 7, image: 5, note: "An ordinary day worth keeping.", place: "slow afternoon / 07" },
+13:  { id: 8, image: 3, note: "We stayed until the lights softened.", place: "after hours / 08" },
+14:  { id: 9, image: 1, note: "Sunlight, somewhere between us.", place: "warm roll / 09" },
+15:  { id: 10, image: 6, note: "Make a wish. Keep the evidence.", place: "little rituals / 10" },
+16:  { id: 11, image: 4, note: "The best frames are never planned.", place: "in between / 11" },
+17:  { id: 12, image: 2, note: "Movement makes its own memory.", place: "motion blur / 12" },
+18:  { id: 13, image: 7, note: "Proof that softness was here.", place: "flowers / 13" },
+19:  { id: 14, image: 5, note: "Nothing special. Everything precious.", place: "ordinary magic / 14" },
+20:  { id: 15, image: 3, note: "Night makes every color honest.", place: "night roll / 15" },
+21:  { id: 16, image: 1, note: "A frame full of almost-summer.", place: "golden hour / 16" },
+22:  { id: 17, image: 6, note: "Growing older, still making wishes.", place: "birthday archive / 17" },
+23:  { id: 18, image: 4, note: "I remember the laugh before the photo.", place: "my people / 18" },
+24:  { id: 19, image: 2, note: "Some memories prefer to stay blurry.", place: "soft edges / 19" },
+25:  { id: 20, image: 7, note: "The roll ends. The feeling doesn’t.", place: "end of roll / 20" },
+26:  { id: 21, image: 1, note: "A little light to take home.", place: "light leak / 21" },
+27:  { id: 22, image: 5, note: "The quiet moments stay, too.", place: "slow afternoon / 22" },
+28:  { id: 23, image: 3, note: "One more song before we go.", place: "after hours / 23" },
+29:  { id: 24, image: 4, note: "Familiar faces, a brand-new memory.", place: "my people / 24" },
+30:  { id: 25, image: 6, note: "Another candle. Another little wish.", place: "birthday roll / 25" },
+31:  { id: 26, image: 2, note: "Not sharp, but still so clear to me.", place: "soft focus / 26" },
+32:  { id: 27, image: 7, note: "Some days bloom in retrospect.", place: "flowers / 27" },
+33:  { id: 28, image: 1, note: "Keeping a pocketful of sunshine.", place: "warm roll / 28" },
+34:  { id: 29, image: 3, note: "The night was better with you in it.", place: "night roll / 29" },
+35:  { id: 30, image: 5, note: "A pause worth pressing the shutter for.", place: "ordinary magic / 30" },
+36:  { id: 31, image: 4, note: "This is what belonging looks like.", place: "in between / 31" },
+37:  { id: 32, image: 2, note: "Life moved. I kept a little of it.", place: "motion blur / 32" },
+38:  { id: 33, image: 6, note: "The sweetest part was being together.", place: "little rituals / 33" },
+39:  { id: 34, image: 7, note: "Soft things deserve a place here.", place: "soft edges / 34" },
+40:  { id: 35, image: 1, note: "Almost the last frame. Still chasing light.", place: "golden hour / 35" },
+41:  { id: 36, image: 5, note: "Until the next roll, keep this feeling.", place: "end of roll / 36" },
+42:];
+43:
+44:const journey = [
+45:  {
+46:    period: "2025 — NOW",
+47:    role: "IELTS Tutor",
+48:    place: "Inception · Writing Consultancy Platform",
+49:    copy: "I teach one-to-one and group classes across all four IELTS skills, focusing on Writing and Listening. More than 20 learners have reached overall 6.5+, with top scores of 8.0–8.5.",
+50:    tag: "education / confidence",
+51:  },
+52:  {
+53:    period: "2025 — 2026",
+54:    role: "MarCom Member",
+55:    place: "Social Business Creation · Vietnam Hub",
+56:    copy: "I designed visual and multimedia stories for a social entrepreneurship community: 1.2M+ views, 2,200 new likes and followers, 22,500 interactions, and a 42% engagement lift.",
+57:    tag: "visual storytelling / impact",
+58:  },
+59:  {
+60:    period: "2024 — NOW",
+61:    role: "Co-founder",
+62:    place: "IELTS Slayer",
+63:    copy: "A personal education project built with my closest friends. I develop learner-centered lessons and individual study paths; 10+ learners have achieved Writing 6.5 or higher.",
+64:    tag: "building / teaching",
+65:  },
+66:  {
+67:    period: "2023 — 2024",
+68:    role: "Vice President",
+69:    place: "Minh Khai Badminton Club",
+70:    copy: "I managed people and operations, coordinated cross-team events, and organized ten hours of weekly training alongside the small rituals that turn a club into a community.",
+71:    tag: "leadership / community",
+72:  },
+73:  {
+74:    period: "2021 — 2023",
+75:    role: "Academic & Teaching Team",
+76:    place: "The Synesthetes",
+77:    copy: "I developed Cambridge-aligned curricula and taught primary and lower-secondary students in rural and underserved areas of Northern Vietnam.",
+78:    tag: "access / education",
+79:  },
+80:  {
+81:    period: "2021 — 2022",
+82:    role: "Human Resources Member",
+83:    place: "Guide.",
+84:    copy: "I managed records for 30+ members, welcomed 10–20 new recruits each term, ran orientation programs, and gave feedback that helped a young team grow together.",
+85:    tag: "people / operations",
+86:  },
+87:  {
+88:    period: "2022",
+89:    role: "Finance & External Relations",
+90:    place: "Gen Project",
+91:    copy: "For an LGBTQ+ youth project, I researched leads, pitched sponsors, negotiated benefits, secured 5,000,000 VND, and stayed close to partners through delivery.",
+92:    tag: "advocacy / partnerships",
+93:  },
+94:];
+95:
+96:function goTo(id: string) {
+97:  document.getElementById(id)?.scrollIntoView({
+98:    behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+99:      ? "auto"
+100:      : "smooth",
+101:  });
+102:}
+103:
+104:function Portfolio() {
+105:  const [photo, setPhoto] = useState<(typeof memories)[number] | null>(null);
+106:  const [introStage, setIntroStage] = useState<"question" | "film" | "done">("question");
+107:  const [noPosition, setNoPosition] = useState(0);
+108:  const [noAttempts, setNoAttempts] = useState(0);
+109:  const filmTrailRef = useRef<HTMLDivElement>(null);
+110:  const lastTrailPoint = useRef<{ x: number; y: number } | null>(null);
+111:  const nextTrailImage = useRef(0);
+112:  const cursorRef = useRef<HTMLDivElement>(null);
+113:  const sprinkleLayerRef = useRef<HTMLDivElement>(null);
+114:  const lastSprinklePoint = useRef<{ x: number; y: number } | null>(null);
+115:
+116:  useEffect(() => {
+117:    if (introStage === "done") return;
+118:    const previousOverflow = document.body.style.overflow;
+119:    document.body.style.overflow = "hidden";
+120:    const filmTimer =
+121:      introStage === "film"
+122:        ? window.setTimeout(
+123:            () => setIntroStage("done"),
+124:            window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 600 : 5200,
+125:          )
+126:        : undefined;
+127:    return () => {
+128:      if (filmTimer) window.clearTimeout(filmTimer);
+129:      document.body.style.overflow = previousOverflow;
+130:    };
+131:  }, [introStage]);
+132:
+133:  useEffect(() => {
+134:    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
+135:    if (!finePointer.matches) return;
+136:
+137:    const moveCursor = (event: PointerEvent) => {
+138:      const cursor = cursorRef.current;
+139:      if (!cursor) return;
+140:      cursor.style.setProperty("--cursor-x", `${event.clientX}px`);
+141:      cursor.style.setProperty("--cursor-y", `${event.clientY}px`);
+142:      cursor.classList.add("is-visible");
+143:
+144:      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+145:      const previous = lastSprinklePoint.current;
+146:      const distance = previous
+147:        ? Math.hypot(event.clientX - previous.x, event.clientY - previous.y)
+148:        : Number.POSITIVE_INFINITY;
+149:      if (distance < 24) return;
+150:      lastSprinklePoint.current = { x: event.clientX, y: event.clientY };
+151:
+152:      const layer = sprinkleLayerRef.current;
+153:      if (!layer) return;
+154:      const sprinkle = document.createElement("span");
+155:      const symbols = ["✦", "✧", "•"];
+156:      const variant = Math.floor(Math.random() * symbols.length);
+157:      sprinkle.className = `cursor-sprinkle sprinkle-${variant + 1}`;
+158:      sprinkle.textContent = symbols[variant];
+159:      sprinkle.style.setProperty("--sprinkle-x", `${event.clientX}px`);
+160:      sprinkle.style.setProperty("--sprinkle-y", `${event.clientY}px`);
+161:      sprinkle.style.setProperty("--sprinkle-drift-x", `${Math.round(Math.random() * 54 - 27)}px`);
+162:      sprinkle.style.setProperty("--sprinkle-drift-y", `${Math.round(Math.random() * -42 - 12)}px`);
+163:      sprinkle.style.setProperty("--sprinkle-rotation", `${Math.round(Math.random() * 120 - 60)}deg`);
+164:      layer.append(sprinkle);
+165:      while (layer.childElementCount > 32) layer.firstElementChild?.remove();
+166:      window.setTimeout(() => sprinkle.remove(), 780);
+167:    };
+168:    const pressCursor = () => cursorRef.current?.classList.add("is-pressed");
+169:    const releaseCursor = () => cursorRef.current?.classList.remove("is-pressed");
+170:    const hideCursor = (event: MouseEvent) => {
+171:      if (!event.relatedTarget) cursorRef.current?.classList.remove("is-visible");
+172:    };
+173:
+174:    window.addEventListener("pointermove", moveCursor);
+175:    window.addEventListener("pointerdown", pressCursor);
+176:    window.addEventListener("pointerup", releaseCursor);
+177:    window.addEventListener("mouseout", hideCursor);
+178:    return () => {
+179:      window.removeEventListener("pointermove", moveCursor);
+180:      window.removeEventListener("pointerdown", pressCursor);
+181:      window.removeEventListener("pointerup", releaseCursor);
+182:      window.removeEventListener("mouseout", hideCursor);
+183:    };
+184:  }, []);
+185:
+186:  const dodgeNo = () => {
+187:    setNoPosition((current) => (current + 1 + Math.floor(Math.random() * 6)) % 8);
+188:    setNoAttempts((current) => current + 1);
+189:  };
+190:
+191:  const drawFilmTrail = (event: ReactPointerEvent<HTMLElement>) => {
+192:    if (
+193:      event.pointerType !== "mouse" ||
+194:      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+195:    ) {
+196:      return;
+197:    }
+198:
+199:    const previous = lastTrailPoint.current;
+200:    const distance = previous
+201:      ? Math.hypot(event.clientX - previous.x, event.clientY - previous.y)
+202:      : Number.POSITIVE_INFINITY;
+203:    if (distance < 52) return;
+204:    lastTrailPoint.current = { x: event.clientX, y: event.clientY };
+205:
+206:    const trail = filmTrailRef.current;
+207:    if (!trail) return;
+208:    const bounds = event.currentTarget.getBoundingClientRect();
+209:    const memory = memories[nextTrailImage.current % memories.length];
+210:    nextTrailImage.current += 1;
+211:
+212:    const plane = document.createElement("div");
+213:    const image = document.createElement("img");
+214:    const caption = document.createElement("span");
+215:    plane.className = "film-trail-plane";
+216:    plane.setAttribute("aria-hidden", "true");
+217:    plane.style.setProperty("--trail-x", `${event.clientX - bounds.left}px`);
+218:    plane.style.setProperty("--trail-y", `${event.clientY - bounds.top}px`);
+219:    plane.style.setProperty("--trail-rotation", `${(Math.random() * 18 - 9).toFixed(2)}deg`);
+220:    image.src = `/assets/film-${memory.image}.png`;
+221:    image.alt = "";
+222:    caption.textContent = String(memory.image).padStart(2, "0");
+223:    plane.append(image, caption);
+224:    trail.append(plane);
+225:
+226:    while (trail.childElementCount > 16) trail.firstElementChild?.remove();
+227:    requestAnimationFrame(() => plane.classList.add("is-visible"));
+228:    window.setTimeout(() => plane.classList.add("is-leaving"), 620);
+229:    window.setTimeout(() => plane.remove(), 1180);
+230:  };
+231:
+232:  return (
+233:    <>
+234:      <div className="sprinkle-layer" ref={sprinkleLayerRef} aria-hidden="true" />
+235:      <div className="custom-cursor" ref={cursorRef} aria-hidden="true">
+236:        <span className="paw-print">
+237:          <i className="paw-pad" />
+238:          <i className="paw-toe paw-toe-one" />
+239:          <i className="paw-toe paw-toe-two" />
+240:          <i className="paw-toe paw-toe-three" />
+241:          <i className="paw-toe paw-toe-four" />
+242:        </span>
+243:      </div>
+244:      {introStage === "question" && (
+245:        <div className="intro-gate" role="dialog" aria-modal="true" aria-labelledby="intro-question">
+246:          <div className="intro-gate-grain" />
+247:          <div className="intro-gate-leopard" />
+248:          <div className="intro-popup">
+249:            <div className="intro-popup-top label">
+250:              <span>PRIVATE ARCHIVE</span>
+251:              <span>QUESTION 01 / 01</span>
+252:            </div>
+253:            <span className="intro-popup-star" aria-hidden="true">✦</span>
+254:            <div className="intro-question" id="intro-question">
+255:              Wanna
+256:              <br />
+257:              know me?
+258:            </div>
+259:            <p className="intro-subtitle handwritten">
+260:              {noAttempts === 0 && "be honest — but choose wisely."}
+261:              {noAttempts === 1 && "not so fast."}
+262:              {noAttempts === 2 && "the universe says try again."}
+263:              {noAttempts >= 3 && "we both know you’re curious."}
+264:            </p>
+265:            <div className="intro-choices">
+266:              <Button
+267:                variant="neutral"
+268:                size="large"
+269:                iconEnd={<ArrowRight size={17} />}
+270:                onClick={() => setIntroStage("film")}
+271:              >
+272:                Yes, let me in
+273:              </Button>
+274:              <div className={`runaway-zone no-position-${noPosition}`}>
+275:                <Button
+276:                  variant="subtle"
+277:                  size="large"
+278:                  aria-label="No — this answer keeps running away"
+279:                  onMouseEnter={dodgeNo}
+280:                  onFocus={dodgeNo}
+281:                  onPointerDown={dodgeNo}
+282:                  onClick={dodgeNo}
+283:                >
+284:                  No
+285:                </Button>
+286:              </div>
+287:            </div>
+288:            <div className="intro-popup-bottom label">
+289:              <span>NHI / NICOLE</span>
+290:              <span>HANOI · 2026</span>
+291:            </div>
+292:          </div>
+293:        </div>
+294:      )}
+295:      {introStage === "film" && (
+296:        <div className="intro-montage" role="dialog" aria-modal="true" aria-label="A short introduction to Nhi">
+297:          <div className="montage-leopard" />
+298:          <div className="montage-grain" />
+299:          <div className="montage-label label">NHI / NICOLE · PERSONAL ARCHIVE</div>
+300:          <figure className="montage-photo montage-photo-one">
+301:            <img src="/assets/childhood.png" alt="Nhi as a child" />
+302:          </figure>
+303:          <figure className="montage-photo montage-photo-two">
+304:            <img src="/assets/film-1.png" alt="A warm memory photographed on film" />
+305:          </figure>
+306:          <figure className="montage-photo montage-photo-three">
+307:            <img src="/assets/film-3.png" alt="A candid night with friends" />
+308:          </figure>
+309:          <div className="montage-line montage-line-one">A LITTLE GIRL</div>
+310:          <div className="montage-line montage-line-two">WITH BIG QUESTIONS.</div>
+311:          <div className="montage-handwritten handwritten">still becoming, always curious</div>
+312:          <div className="montage-progress" aria-hidden="true"><span /></div>
+313:          <div className="montage-skip">
+314:            <Button variant="neutral" size="small" onClick={() => setIntroStage("done")}>
+315:              Skip to portfolio <ArrowRight size={15} />
+316:            </Button>
+317:          </div>
+318:        </div>
+319:      )}
+320:      <main className="portfolio" id="top" inert={introStage !== "done" ? true : undefined}>
+321:        <header className="masthead">
+322:          <div className="masthead-brand">
+323:            <span className="star-mark" aria-hidden="true">
+324:              ✦
+325:            </span>
+326:            NHI / NICOLE
+327:          </div>
+328:          <nav className="masthead-nav" aria-label="Portfolio chapters">
+329:            <Button variant="subtle" size="small" onClick={() => goTo("about")}>
+330:              01 About
+331:            </Button>
+332:            <Button variant="subtle" size="small" onClick={() => goTo("journey")}>
+333:              02 Journey
+334:            </Button>
+335:            <Button variant="subtle" size="small" onClick={() => goTo("film")}>
+336:              03 Film
+337:            </Button>
+338:          </nav>
+339:          <Button
+340:            variant="neutral"
+341:            size="small"
+342:            iconEnd={<Mail size={15} />}
+343:            onClick={() => {
+344:              window.location.href = "mailto:nhildh.work@gmail.com";
+345:            }}
+346:          >
+347:            Say hello
+348:          </Button>
+349:        </header>
+350:
+351:        <section className="hero" aria-labelledby="hero-title">
+352:          <div className="hero-meta label">PERSONAL ARCHIVE · HANOI · 2026</div>
+353:          <div className="hero-title" id="hero-title">
+354:            PORTFOLIO
+355:          </div>
+356:          <div className="hero-script">of a girl becoming</div>
+357:
+358:          <figure className="hero-photo hero-photo-left">
+359:            <img src="/assets/film-1.png" alt="A warm, imperfect film memory" />
+360:            <figcaption className="label">FRAME 01 / KEEP THE LIGHT</figcaption>
+361:          </figure>
+362:          <figure className="hero-photo hero-photo-center">
+363:            <img src="/assets/childhood.png" alt="Nhi as a child" />
+364:            <figcaption className="handwritten">for the little girl in me</figcaption>
+365:          </figure>
+366:          <figure className="hero-photo hero-photo-right">
+367:            <img src="/assets/film-3.png" alt="A candid night photographed on film" />
+368:            <figcaption className="label">NO PERFECT POSES</figcaption>
+369:          </figure>
+370:
+371:          <div className="hero-leopard" aria-hidden="true" />
+372:          <span className="hero-spark hero-spark-one" aria-hidden="true">✦</span>
+373:          <span className="hero-spark hero-spark-two" aria-hidden="true">✧</span>
+374:          <div className="hero-foot">
+375:            <span>FILM · TEACHING · PEOPLE · SMALL BEAUTIFUL THINGS</span>
+376:            <Button
+377:              variant="neutral"
+378:              size="small"
+379:              iconEnd={<ArrowDown size={15} />}
+380:              onClick={() => goTo("about")}
+381:            >
+382:              Open the diary
+383:            </Button>
+384:          </div>
+385:        </section>
+386:
+387:        <section className="about paper-section" id="about">
+388:          <div className="section-index label">01 / WHO I AM</div>
+389:          <div className="about-collage">
+390:            <div className="torn-note">
+391:              <span className="tape" aria-hidden="true" />
+392:              <p className="label">A NOTE TO SELF</p>
+393:              <p className="handwritten note-large">
+394:                stay curious.
+395:                <br />
+396:                stay soft.
+397:              </p>
+398:              <p>
+399:                I’m Huyền Nhi — Nicole when it’s easier. A teacher, a community
+400:                builder, a girl with a film camera, and someone with an
+401:                unreasonable amount of faith in people becoming more themselves.
+402:              </p>
+403:            </div>
+404:            <figure className="about-photo">
+405:              <img src="/assets/film-5.png" alt="A personal moment from Nhi's film archive" />
+406:              <figcaption className="handwritten">somewhere between ambition & wonder</figcaption>
+407:            </figure>
+408:            <div className="about-copy">
+409:              <p className="display-copy">
+410:                MANY THREADS,
+411:                <br />
+412:                ONE PERSON.
+413:              </p>
+414:              <p>
+415:                I am an International Business Economics student at Foreign
+416:                Trade University, an IELTS teacher, a community builder, and
+417:                the friend who brings a film camera everywhere. I like plans,
+418:                but I care most about the humans living inside them.
+419:              </p>
+420:              <p>
+421:                I can spend one afternoon shaping a lesson and the next reading
+422:                a new knitting pattern, or waiting for a roll of film to come
+423:                back. The through-line is attention: looking closely, asking
+424:                why, and preserving what might otherwise be missed.
+425:              </p>
+426:              <div className="about-signature">with love, Nhi</div>
+427:            </div>
+428:          </div>
+429:          <div className="identity-board">
+430:            <article className="identity-card identity-card-dark">
+431:              <p className="label">CURRENTLY</p>
+432:              <div className="identity-title">Foreign Trade University</div>
+433:              <p>Bachelor of International Business Economics · Hanoi</p>
+434:              <div className="identity-stat">3.94<span>/ 4.00 GPA</span></div>
+435:            </article>
+436:            <article className="identity-card">
+437:              <p className="label">WORDS I LIVE IN</p>
+438:              <div className="language-list">
+439:                <span>Vietnamese <b>Native</b></span>
+440:                <span>English <b>C1 · IELTS 8.0</b></span>
+441:                <span>French <b>A1</b></span>
+442:                <span>Mandarin <b>A1</b></span>
+443:              </div>
+444:            </article>
+445:            <article className="identity-card identity-card-leopard">
+446:              <p className="label">OFF THE CLOCK</p>
+447:              <div className="identity-title">Film rolls, knitting & long conversations.</div>
+448:              <p className="handwritten">small obsessions make a life</p>
+449:            </article>
+450:            <article className="identity-card">
+451:              <p className="label">MY TOOLBOX</p>
+452:              <div className="tool-cloud">
+453:                <span>Figma</span><span>Illustrator</span><span>Excel</span>
+454:                <span>R</span><span>Stata</span><span>Python</span>
+455:                <span>Google Workspace</span>
+456:              </div>
+457:              <p>Design instinct, structured thinking, and just enough code to keep asking better questions.</p>
+458:            </article>
+459:          </div>
+460:        </section>
+461:
+462:        <section className="story paper-section" id="story">
+463:          <div className="story-heading">
+464:            <p className="label">02 / THE STORY BEHIND THE LISTS</p>
+465:            <div className="section-title">
+466:              I DIDN’T GROW
+467:              <br />
+468:              IN A STRAIGHT LINE.
+469:            </div>
+470:            <p className="handwritten">and I’m learning not to ask myself to.</p>
+471:          </div>
+472:          <div className="story-chapter story-chapter-child">
+473:            <figure className="story-childhood-photo">
+474:              <img src="/assets/childhood.png" alt="Nhi as a little girl" />
+475:              <figcaption className="label">THANH HÓA · THE BEGINNING</figcaption>
+476:            </figure>
+477:            <div className="story-chapter-copy">
+478:              <p className="label">CHAPTER ONE · THE LITTLE GIRL</p>
+479:              <div className="story-title">Before the ambition, there was wonder.</div>
+480:              <p>
+481:                I keep returning to this photograph because she reminds me of
+482:                the person underneath every deadline and achievement. She was
+483:                curious, sensitive, a little stubborn, and always imagining a
+484:                world larger than the one in front of her.
+485:              </p>
+486:              <p>
+487:                Growing up did not mean leaving her behind. It meant learning
+488:                to build a life where her softness could survive alongside my
+489:                ambition.
+490:              </p>
+491:              <span className="handwritten">I’m doing this for both of us.</span>
+492:            </div>
+493:          </div>
+494:          <div className="story-chapter story-chapter-between">
+495:            <div className="story-quote">
+496:              “I want to be taken seriously without becoming someone who takes
+497:              life too seriously.”
+498:            </div>
+499:            <div className="story-chapter-copy">
+500:              <p className="label">CHAPTER TWO · LEARNING TO BECOME</p>
+501:              <div className="story-title">I found myself by trying many lives on.</div>
+502:              <p>
+503:                Teaching showed me that confidence can be built one honest
+504:                conversation at a time. Leadership taught me that the invisible
+505:                work matters: remembering names, noticing silence, and keeping
+506:                promises when nobody is watching.
+507:              </p>
+508:              <p>
+509:                University gave my curiosity structure. Communities gave it a
+510:                purpose. None of these roles explains me alone, but together
+511:                they show the kind of person I am becoming.
+512:              </p>
+513:            </div>
+514:          </div>
+515:          <div className="story-chapter story-chapter-camera">
+516:            <div className="story-film-stack">
+517:              <img src="/assets/film-4.png" alt="Friends captured on film" />
+518:              <img src="/assets/film-6.png" alt="A birthday memory captured on film" />
+519:            </div>
+520:            <div className="story-chapter-copy">
+521:              <p className="label">CHAPTER THREE · WHAT I KEEP</p>
+522:              <div className="story-title">My camera remembers what my mind might lose.</div>
+523:              <p>
+524:                Film photography asks me to surrender control. I cannot retake
+525:                the exact laugh, correct every blur, or know whether the light
+526:                landed perfectly. I press the shutter anyway.
+527:              </p>
+528:              <p>
+529:                Months later, a frame comes back and an ordinary afternoon has
+530:                become evidence: I was here, I loved these people, and this
+531:                small life was worth noticing.
+532:              </p>
+533:              <span className="handwritten">imperfection is part of the memory.</span>
+534:            </div>
+535:          </div>
+536:          <div className="story-values">
+537:            <span><b>01</b> Curiosity before certainty</span>
+538:            <span><b>02</b> People before performance</span>
+539:            <span><b>03</b> Courage with a soft center</span>
+540:            <span><b>04</b> Keep the ordinary moments</span>
+541:          </div>
+542:        </section>
+543:
+544:        <section className="journey" id="journey">
+545:          <div className="journey-heading">
+546:            <div>
+547:              <p className="label">03 / THE JOURNEY SO FAR</p>
+548:              <div className="section-title">
+549:                WORK, PEOPLE
+550:                <br />
+551:                & SHOWING UP.
+552:              </div>
+553:            </div>
+554:            <p>
+555:              Seven chapters, from teaching in underserved communities to
+556:              building learning experiences and telling stories for social
+557:              impact.
+558:            </p>
+559:          </div>
+560:          <div className="journey-list">
+561:            {journey.map((item, index) => (
+562:              <article className="journey-row" key={`${item.place}-${item.period}`}>
+563:                <div className="journey-index">{String(index + 1).padStart(2, "0")}</div>
+564:                <div className="journey-time label">{item.period}</div>
+565:                <div className="journey-role">
+566:                  <p className="label">{item.tag}</p>
+567:                  <div>{item.role}</div>
+568:                  <span>{item.place}</span>
+569:                </div>
+570:                <p className="journey-copy">{item.copy}</p>
+571:              </article>
+572:            ))}
+573:          </div>
+574:          <div className="journey-outro">
+575:            <span className="handwritten">not a straight line. still moving forward.</span>
+576:            <Button variant="neutral" size="small" iconEnd={<ArrowDown size={15} />} onClick={() => goTo("film")}>
+577:              The moments in between
+578:            </Button>
+579:          </div>
+580:        </section>
+581:
+582:        <section
+583:          className="film"
+584:          id="film"
+585:          onPointerMove={drawFilmTrail}
+586:          onPointerLeave={() => {
+587:            lastTrailPoint.current = null;
+588:          }}
+589:        >
+590:          <div className="film-trail" ref={filmTrailRef} aria-hidden="true" />
+591:          <div className="film-heading">
+592:            <div>
+593:              <p className="label">04 / FILM DIARY · IMPERFECTIONS INCLUDED</p>
+594:              <div className="section-title">
+595:                LIFE, A LITTLE
+596:                <br />
+597:                OUT OF FOCUS.
+598:              </div>
+599:            </div>
+600:            <div className="film-heading-note">
+601:              <Sparkles size={20} strokeWidth={1.5} />
+602:              <p>
+603:                The people, places, and little accidents of light I want to
+604:                remember.
+605:              </p>
+606:              <span className="film-trail-hint handwritten">move around — leave a trail.</span>
+607:              <Button
+608:                variant="subtle"
+609:                size="small"
+610:                iconEnd={<ArrowRight size={15} />}
+611:                onClick={() =>
+612:                  window.open("https://www.instagram.com/photosof.kem_/", "_blank")
+613:                }
+614:              >
+615:                @photosof.kem_
+616:              </Button>
+617:            </div>
+618:          </div>
+619:          <div className="film-grid">
+620:            {memories.map((memory, index) => (
+621:              <figure className={`film-frame frame-${index + 1}`} key={memory.id}>
+622:                <div className="film-image">
+623:                  <img
+624:                    src={`/assets/film-${memory.image}.png`}
+625:                    alt={memory.note}
+626:                    loading="lazy"
+627:                  />
+628:                  <Button
+629:                    variant="neutral"
+630:                    size="small"
+631:                    onClick={() => setPhoto(memory)}
+632:                    aria-label={`Open ${memory.note}`}
+633:                  >
+634:                    View frame
+635:                  </Button>
+636:                </div>
+637:                <figcaption>
+638:                  <span className="label">{memory.place}</span>
+639:                  <span className="handwritten">{memory.note}</span>
+640:                </figcaption>
+641:              </figure>
+642:            ))}
+643:          </div>
+644:        </section>
+645:
+646:        <footer className="footer">
+647:          <p className="label">MAYBE OUR ORBITS WERE MEANT TO CROSS.</p>
+648:          <div className="footer-title">
+649:            LEAVE A LITTLE
+650:            <br />
+651:            SOMETHING IN MY STORY.
+652:          </div>
+653:          <div className="footer-actions">
+654:            <Button
+655:              variant="neutral"
+656:              iconEnd={<ArrowRight size={17} />}
+657:              onClick={() => {
+658:                window.location.href = "mailto:nhildh.work@gmail.com";
+659:              }}
+660:            >
+661:              nhildh.work@gmail.com
+662:            </Button>
+663:            <Button variant="subtle" onClick={() => goTo("top")}>
+664:              Back to the beginning ↑
+665:            </Button>
+666:          </div>
+667:          <div className="footer-bottom label">
+668:            <span>© {new Date().getFullYear()} LÊ ĐOÀN HUYỀN NHI</span>
+669:            <span>PERSONAL ARCHIVE / NEVER A FINISHED PRODUCT</span>
+670:          </div>
+671:        </footer>
+672:      </main>
+673:
+674:      <Modal
+675:        isOpen={photo !== null}
+676:        onClose={() => setPhoto(null)}
+677:        title={photo?.note}
+678:        size="large"
+679:      >
+680:        {photo && (
+681:          <div className="modal-memory">
+682:            <img src={`/assets/film-${photo.image}.png`} alt={photo.note} />
+683:            <p className="handwritten">a memory, not a perfect picture.</p>
+684:          </div>
+685:        )}
+686:      </Modal>
+687:
+688:    </>
+689:  );
+690:}
+691:
+692:export default function App() {
+693:  return (
+694:    <ThemeProvider>
+695:      <Portfolio />
+696:    </ThemeProvider>
+697:  );
+698:}
+
+(End of file — 698 lines.)
