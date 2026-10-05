@@ -4,30 +4,52 @@ import { ArrowDown, ArrowRight, Instagram, Linkedin, Mail, Phone, Sparkles } fro
 import { Bodies, Body, Composite, Engine } from "matter-js";
 import heroLeftImage from "@/imports/IMG_8884.jpeg";
 import heroRightImage from "@/imports/IMG_1958.jpeg";
+import aboutImage from "@/imports/IMG_1014.JPG";
+import storyImageOne from "@/imports/IMG_2688.jpg";
+import storyImageTwo from "@/imports/IMG_2687.jpg";
 import datathonImage from "@/imports/datathon-2026.jpg";
 import ftuLogo from "@/imports/ftu-logo.jpg";
 import kellaImage from "@/imports/kella-in-life.png";
+import diaryImage01 from "@/imports/film-diary-01.png";
+import diaryImage02 from "@/imports/film-diary-02.png";
+import diaryImage03 from "@/imports/film-diary-03.png";
+import diaryImage04 from "@/imports/film-diary-04.png";
+import diaryImage05 from "@/imports/film-diary-05.png";
+import diaryImage06 from "@/imports/film-diary-06.png";
+import diaryImage07 from "@/imports/film-diary-07.png";
+import diaryImage08 from "@/imports/film-diary-08.png";
+import diaryImage09 from "@/imports/film-diary-09.png";
+import diaryImage10 from "@/imports/film-diary-10.jpg";
+import diaryImage11 from "@/imports/film-diary-11.jpg";
+import diaryImage12 from "@/imports/film-diary-12.jpg";
+import diaryImage13 from "@/imports/film-diary-13.jpg";
+import diaryImage14 from "@/imports/film-diary-14.jpg";
+import diaryImage15 from "@/imports/film-diary-15.jpg";
+import diaryImage16 from "@/imports/film-diary-16.jpg";
+import diaryImage17 from "@/imports/film-diary-17.jpg";
+import diaryImage18 from "@/imports/film-diary-18.jpg";
+import diaryImage19 from "@/imports/film-diary-19.jpg";
 
 const memories = [
-  { id: 1, image: 1, note: "The light found us.", place: "light leak / 01" },
-  { id: 2, image: 3, note: "After dark, still golden.", place: "night out / 02" },
-  { id: 3, image: 4, note: "The people make the picture.", place: "my people / 03" },
-  { id: 4, image: 6, note: "A little birthday, a lot of love.", place: "birthday roll / 04" },
-  { id: 5, image: 2, note: "A blur I would never erase.", place: "soft focus / 05" },
-  { id: 6, image: 7, note: "Flowers and familiar faces.", place: "last frame / 06" },
-  { id: 7, image: 5, note: "An ordinary day worth keeping.", place: "slow afternoon / 07" },
-  { id: 8, image: 3, note: "We stayed until the lights softened.", place: "after hours / 08" },
-  { id: 9, image: 1, note: "Sunlight, somewhere between us.", place: "warm roll / 09" },
-  { id: 10, image: 6, note: "Make a wish. Keep the evidence.", place: "little rituals / 10" },
-  { id: 11, image: 4, note: "The best frames are never planned.", place: "in between / 11" },
-  { id: 12, image: 2, note: "Movement makes its own memory.", place: "motion blur / 12" },
-  { id: 13, image: 7, note: "Proof that softness was here.", place: "flowers / 13" },
-  { id: 14, image: 5, note: "Nothing special. Everything precious.", place: "ordinary magic / 14" },
-  { id: 15, image: 3, note: "Night makes every color honest.", place: "night roll / 15" },
-  { id: 16, image: 1, note: "A frame full of almost-summer.", place: "golden hour / 16" },
-  { id: 17, image: 6, note: "Growing older, still making wishes.", place: "birthday archive / 17" },
-  { id: 18, image: 4, note: "I remember the laugh before the photo.", place: "my people / 18" },
-  { id: 19, image: 2, note: "Some memories prefer to stay blurry.", place: "soft edges / 19" },
+  { id: 1, src: diaryImage01, note: "The cold day felt warmer with you in it.", place: "schoolyard / 01" },
+  { id: 2, src: diaryImage02, note: "Some versions of me only exist between frames.", place: "double exposure / 02" },
+  { id: 3, src: diaryImage03, note: "The photographer finally made it into the photograph.", place: "mirror proof / 03" },
+  { id: 4, src: diaryImage04, note: "Blue doors and a borrowed afternoon.", place: "blue hour / 04" },
+  { id: 5, src: diaryImage05, note: "The garden made a little room for me.", place: "in bloom / 05" },
+  { id: 6, src: diaryImage06, note: "A face, a frame, and all the noise between.", place: "silver grain / 06" },
+  { id: 7, src: diaryImage07, note: "Soft focus. Sharp memory.", place: "contact sheet / 07" },
+  { id: 8, src: diaryImage08, note: "Proof I was on both sides of the camera.", place: "self portrait / 08" },
+  { id: 9, src: diaryImage09, note: "The table kept the whole night for us.", place: "after dinner / 09" },
+  { id: 10, src: diaryImage10, note: "A crowd, one color, a hundred small stories.", place: "school colors / 10" },
+  { id: 11, src: diaryImage11, note: "The camera came with us into every room.", place: "girls on film / 11" },
+  { id: 12, src: diaryImage12, note: "Night made the flash tell the truth.", place: "after dark / 12" },
+  { id: 13, src: diaryImage13, note: "A very good reason to stop walking.", place: "street friend / 13" },
+  { id: 14, src: diaryImage14, note: "A beginning looks ordinary while you’re living it.", place: "first days / 14" },
+  { id: 15, src: diaryImage15, note: "We dressed for the part and became a team.", place: "field notes / 15" },
+  { id: 16, src: diaryImage16, note: "Some roads are easier with company.", place: "green miles / 16" },
+  { id: 17, src: diaryImage17, note: "The photographer, caught in the act.", place: "behind the lens / 17" },
+  { id: 18, src: diaryImage18, note: "A horizon with nowhere else to be.", place: "sea air / 18" },
+  { id: 19, src: diaryImage19, note: "The city keeps cooking after dark.", place: "night market / 19" },
   { id: 20, image: 7, note: "The roll ends. The feeling doesn’t.", place: "end of roll / 20" },
   { id: 21, image: 1, note: "A little light to take home.", place: "light leak / 21" },
   { id: 22, image: 5, note: "The quiet moments stay, too.", place: "slow afternoon / 22" },
@@ -46,6 +68,10 @@ const memories = [
   { id: 35, image: 1, note: "Almost the last frame. Still chasing light.", place: "golden hour / 35" },
   { id: 36, image: 5, note: "Until the next roll, keep this feeling.", place: "end of roll / 36" },
 ];
+
+function memorySource(memory: (typeof memories)[number]) {
+  return "src" in memory ? memory.src : `/assets/film-${memory.image}.png`;
+}
 
 const workExperience = [
   {
@@ -657,9 +683,9 @@ function Portfolio() {
     plane.style.setProperty("--trail-x", `${event.clientX - bounds.left}px`);
     plane.style.setProperty("--trail-y", `${event.clientY - bounds.top}px`);
     plane.style.setProperty("--trail-rotation", `${(Math.random() * 18 - 9).toFixed(2)}deg`);
-    image.src = `/assets/film-${memory.image}.png`;
+    image.src = memorySource(memory);
     image.alt = "";
-    caption.textContent = String(memory.image).padStart(2, "0");
+    caption.textContent = String(memory.id).padStart(2, "0");
     plane.append(image, caption);
     trail.append(plane);
 
@@ -841,7 +867,7 @@ function Portfolio() {
               </p>
             </div>
             <figure className="about-photo">
-              <img src="/assets/film-5.png" alt="A personal moment from Nhi's film archive" />
+              <img src={aboutImage} alt="A personal moment from Nhi's film archive" />
             </figure>
             <div className="about-copy">
               <p className="display-copy">
@@ -952,8 +978,8 @@ function Portfolio() {
           </div>
           <div className="story-chapter story-chapter-camera">
             <div className="story-film-stack">
-              <img src="/assets/film-4.png" alt="Friends captured on film" />
-              <img src="/assets/film-6.png" alt="A birthday memory captured on film" />
+              <img src={storyImageOne} alt="Friends captured on film" />
+              <img src={storyImageTwo} alt="A birthday memory captured on film" />
             </div>
             <div className="story-chapter-copy">
               <p className="label">CHAPTER THREE · WHAT I KEEP</p>
@@ -1207,7 +1233,7 @@ function Portfolio() {
               <figure className={`film-frame frame-${index + 1}`} key={memory.id}>
                 <div className="film-image">
                   <img
-                    src={`/assets/film-${memory.image}.png`}
+                    src={memorySource(memory)}
                     alt={memory.note}
                     loading="lazy"
                   />
@@ -1257,7 +1283,7 @@ function Portfolio() {
       >
         {photo && (
           <div className="modal-memory">
-            <img src={`/assets/film-${photo.image}.png`} alt={photo.note} />
+            <img src={memorySource(photo)} alt={photo.note} />
             <p className="handwritten">a memory, not a perfect picture.</p>
           </div>
         )}
